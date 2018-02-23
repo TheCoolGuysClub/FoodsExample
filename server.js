@@ -10,19 +10,23 @@ hbs.registerPartials(path.join(__dirname, "/views/partials"))
 
 app.use(express.static(path.join(__dirname, "public")))
 
+//View helpers
+hbs.registerHelper('log', word => console.log(word))
+hbs.registerHelper('capitalize', word => {
+  word = word.toLowerCase();
+  return word[0].toUpperCase() + word.slice(1).toLowerCase();
+})
 
 app.get('/', (req, res) => {
+  res.redirect('/animal');
+})
+app.get('/animals', (req, res) => {
+  let animal = 'crocodile'
+  if (req.query.animal) {
+    animal = req.query.animal;
+  }
   res.render('./index.hbs', {
-    foods: [
-      {
-        name: 'pasta',
-        country: 'italy'
-      },
-      {
-        name: 'sushi',
-        country: 'japan'
-      }
-    ]  
+    animal: animal
   })
 })
 
